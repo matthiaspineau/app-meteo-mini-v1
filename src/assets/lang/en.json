@@ -1,0 +1,22 @@
+{
+    "lang": {
+        "form": {
+            "btnSearch": "Search",
+            "placeholder": "Enter your city",
+            "errorText": "City don't found"
+        },
+        "table": {
+            "min": "min °C",
+            "max": "max °C",
+            "pressure": "pressure",
+            "humidity": "humidity",
+            "wind": "wind",
+            "visibility": "visibility"
+        },
+        "sun": {
+            "sunrise": "Sunrise",
+            "sunset": "Sunset"
+        },
+        "load": "Loading"
+    }
+}

@@ -1,0 +1,100 @@
+.container_perso {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+  
+  
+@media (min-width: 992px) {
+    .container_perso {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container_perso {
+        max-width: 1280px;
+    }
+}
+   
+   
+// container
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    }
+    
+    @media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+    }
+    
+    @media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+    }
+    
+    @media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+    }
+    
+    @media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+    }
+    
+    .container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    }
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}

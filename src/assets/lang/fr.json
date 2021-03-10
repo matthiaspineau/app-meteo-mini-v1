@@ -1,0 +1,22 @@
+{
+    "lang": {
+        "form": {
+            "btnSearch": "Recherche",
+            "placeholder": "Entrer votre ville",
+            "errorText": "Ville introuvable"
+        },
+        "table": {
+            "min": "min °C",
+            "max": "max °C",
+            "pressure": "pression",
+            "humidity": "humidité",
+            "wind": "Vent",
+            "visibility": "visibilité"
+        },
+        "sun": {
+            "sunrise": "lever",
+            "sunset": "coucher"
+        },
+        "load": "Chargement"
+    }
+}
