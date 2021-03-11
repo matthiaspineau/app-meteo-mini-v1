@@ -1,21 +1,25 @@
 <template>
+<div>
+    <button @click="progress">cliquer</button>
+
     <div class="wrapper__sun">
         <div class="left">
-          <span>{{ file.sys.sunrise | toDateHM }}</span>
+          <span>{{ (file.sys.sunrise + ( file.timezone -1000 )) | toDateHM }}</span>
           <small class="small">{{ lang.sunrise }}</small>
         </div>
         <div class="center">
             <div class="wrapper__dessin">
                 <div class="dessin">
-                    <span class="sunSpan"></span>
+                    <span class="sunSpan" :class="{ jour : isJour, nuit : isNuit }" :style="{ left : positionCercle + '%' } "></span>
                 </div>
             </div>
-            <span>{{ file.dt | toDateHM }}</span>
+            <span>{{ (file.dt + ( file.timezone )) | toDateHM }}</span>
         </div>
         <div class="right">
-          <span>{{ file.sys.sunset | toDateHM }}</span>
+          <span>{{ (file.sys.sunset + ( file.timezone  )) | toDateHM }}</span>
           <small class="small">{{ lang.sunset }}</small>
         </div>
+    </div>
     </div>
 </template>
 
@@ -23,6 +27,14 @@
 export default {
     name: 'Sun',
     props: {
+        // isNuit: {
+        //     type: Boolean,
+        //     default: false
+        // },
+        // isJour: {
+        //     type: Boolean,
+        //     default: false
+        // },
         file: {
             type: Object,
             default: function () {
@@ -36,17 +48,68 @@ export default {
             }
         }
     },
-    // methods: {
-    //     calcul() {
-    //         obj.dt*1000-(obj.timezone*1000)
-    //     }
-    // },
+    computed: {
+        positionCercle() {
+            let deb = this.file.sys.sunrise
+            let act = this.file.dt
+            let fin = this.file.sys.sunset
+            console.log(act , fin, (fin - act))
+            // let result = ( (1000 * 100) / 1500)
+             let result = ( (act * 100) / (fin + deb) )
+            // 1000 × 100 / 1500 = 66.667
+            console.log(result)
+            return result
+
+        },
+        isJour() {
+            let deb = this.file.sys.sunrise
+            let act = this.file.dt
+            let fin = this.file.sys.sunset
+            if ( deb <= act && act <= fin) {
+                // console.log('jour')
+                return true
+            } else {
+                // console.log('nuit')
+                return false
+            }
+        },
+        isNuit() {
+            let deb = this.file.sys.sunrise
+            let act = this.file.dt
+            let fin = this.file.sys.sunset
+            if ( deb <= act && act <= fin) {
+                console.log('jour')
+                return false
+            } else {
+                console.log('nuit')
+                return true
+            }
+        }
+    }, 
+    methods: {
+        progress() {
+            // let deb = this.file.sys.sunrise
+            // let act = this.file.dt
+            // let fin = this.file.sys.sunset
+            // // console.log(deb, act, fin)
+
+            // if ( deb <= act && act <= fin) {
+            //     console.log('jour')
+            //     this.IsJour = true
+            //     this.isNuit = false
+            // } else {
+            //     console.log('nuit')
+            //     this.IsJour = false
+            //     this.isNuit = true
+            // }
+        }
+    },
     filters: {
         toDateHM: function (timeStamp) {
         
         let date = new Date(timeStamp * 1000); 
-        let heure = date.getHours();
-        let min = date.getMinutes();
+        let heure = date.getUTCHours();
+        let min = date.getUTCMinutes();
         heure = heure.toString().length > 1 ? heure.toString() : '0' + heure
         min = min.toString().length > 1 ? min.toString() : '0' + min
         return heure + ":" + min;
@@ -56,7 +119,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 
 .wrapper__dessin {
     // position: relative;
@@ -75,11 +137,21 @@ export default {
         .sunSpan {
             position: absolute;
             bottom: calc(0% - 10px);
-            right: calc(50% - 10px);
+            // right: calc(50% - 10px);
             width: 20px;
             height: 20px;
             border-radius: 50%;
+            // border: 1px solid red;
+        }
+
+        .jour {
+            background: red;
             border: 1px solid red;
+        }
+
+        .nuit {
+            background: blue;
+            border: 1px solid blue;
         }
         
     }
