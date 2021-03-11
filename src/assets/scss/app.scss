@@ -1,17 +1,15 @@
 @import 'starter/reboot.scss';
 @import '_forms.scss';
 
-// select {
-//     color: #fff;
-//     border: none;
-//     padding: 2px 8px;
-//     border-radius: 5px;
-//     background-color: rgb(22, 22, 22);
+*, button {
+    outline: 0;
+} 
+    
 
-//     &:focus {
-//         border: none;
-//     }
-// }
+.date {
+    font-size: 0.8rem;
+    color: rgb(83,89,101)
+}
 
 .wrapper__loader {
     position: absolute;

@@ -1,19 +1,19 @@
 <template>
     <div class="wrapper__sun">
         <div class="left">
-          <span>{{ file.sys.sunrise | toDate }}</span>
+          <span>{{ file.sys.sunrise | toDateHM }}</span>
           <small class="small">{{ lang.sunrise }}</small>
         </div>
         <div class="center">
             <div class="wrapper__dessin">
                 <div class="dessin">
-
+                    <span class="sunSpan"></span>
                 </div>
             </div>
-            <span>{{ file.dt | toDate }}</span>
+            <span>{{ file.dt | toDateHM }}</span>
         </div>
         <div class="right">
-          <span>{{ file.sys.sunset | toDate }}</span>
+          <span>{{ file.sys.sunset | toDateHM }}</span>
           <small class="small">{{ lang.sunset }}</small>
         </div>
     </div>
@@ -36,12 +36,19 @@ export default {
             }
         }
     },
+    // methods: {
+    //     calcul() {
+    //         obj.dt*1000-(obj.timezone*1000)
+    //     }
+    // },
     filters: {
-        toDate: function (timeStamp) {
+        toDateHM: function (timeStamp) {
         
         let date = new Date(timeStamp * 1000); 
         let heure = date.getHours();
         let min = date.getMinutes();
+        heure = heure.toString().length > 1 ? heure.toString() : '0' + heure
+        min = min.toString().length > 1 ? min.toString() : '0' + min
         return heure + ":" + min;
         },
     }
@@ -51,43 +58,32 @@ export default {
 <style lang="scss" scoped>
 
 
-// .wrapper__dessin {
-//     // position: relative;
-//     margin: 0 auto;
+.wrapper__dessin {
+    // position: relative;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    padding-top: 10px;
 
-//     .dessin {
-//         position: relative;
+    .dessin {
+        position: relative;
 
-//         width: 150px;
-//         height: 80px;
-
-//         border-radius: 50%;
-//          border-radius: 50%/80px 80px 0 0;
-//         border: 1px solid #fff;
-
-//         &::before {
-//             content: '';
-//             position: absolute;
-//             bottom: calc(0% - 10px);
-//             left: calc(0% - 10px);
-//             width: 20px;
-//             height: 20px;
-//             border-radius: 50%;
-//             border: 1px solid blue;
-//         }
-
-//         &::after {
-//             content: '';
-//             position: absolute;
-//             bottom: calc(100% - 10px);
-//             right: calc(50% - 10px);
-//             width: 20px;
-//             height: 20px;
-//             border-radius: 50%;
-//             border: 1px solid red;
-//         }
-//     }
-// }
+        width: 100%;
+        height: 1px;
+        background: #fff;
+       
+   
+        .sunSpan {
+            position: absolute;
+            bottom: calc(0% - 10px);
+            right: calc(50% - 10px);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid red;
+        }
+        
+    }
+}
 
 
 .wrapper__sun {

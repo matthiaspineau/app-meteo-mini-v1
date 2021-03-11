@@ -3,7 +3,7 @@
     <!-- Navbar -->
     <nav class="navbar">
       <h1>Méteo</h1>
-      <!-- <span>{{ selectLang }}</span> -->
+      <span class="date">{{ file.dt | toDateJMY }}</span>
       <div class="wrapper__lang">
         <select v-model="selectLang">
           <option value="fr">Fr</option>
@@ -12,11 +12,10 @@
       </div>
     </nav>
 
-
     <!-- Formulaire -->
     <div class="wrapper__form">
       <div class="form">
-        <input :class="errorCity ? 'error' : '' " type="text" v-model.trim="city" :placeholder="lang.form.placeholder" />
+        <input :class="errorCity ? 'error' : '' " type="text" v-model.lazy="city" :placeholder="lang.form.placeholder" />
         <span v-if="errorCity" class="error__text">{{ lang.form.errorText }}</span>
       </div>
       <div>
@@ -46,10 +45,24 @@
         <h3>{{ lang.load }}</h3>
       </div>
     </div>
-    <!-- Zone debug
-    <div class="debug">
-      {{ fileApi }}
-    </div> -->
+
+    <!-- Zone debug -->
+        <!-- debug local storage -->
+       <!-- <div>
+          <div>localStorage</div>
+          <div>
+            <span>{{ userCity }}</span>
+          </div>
+          <div>
+            <button @click="clearAllLocalStorage" class="btn-grad">clear all</button><button @click="cons">console log</button>
+          </div>
+        </div> -->
+
+        <!-- <div class="debug">
+          {{ fileApi }}
+        </div> -->
+    <!-- Fin Zone debug -->
+
   </div>
 </template>
 
@@ -64,25 +77,25 @@ import langFr from "@/assets/lang/fr.json";
 import langEn from "@/assets/lang/en.json";
 
 const ApiKey = '728e0adecbfd917c5d6a91e18904d29b'
-// const units = 'metric'
-// const lang = 'fr'
 
 export default {
   name: "App",
   data() {
     return {
+      userCity: localStorage.getItem('userCity'),
       fileExample: example,
       fileApi: null,
-      city: "",
       errorCity: false,
+      loaderVisible: false,
+      city: localStorage.getItem('userCity') ? localStorage.getItem('userCity')  : "epinay-sur-seine",
       selectLang: 'fr',
-      loaderVisible: false
     };
   },
   computed: {
     lang() {
       this.showLoader()
-      this.loader()
+      // this.loader()
+      this.axiosGet()
       return this.selectLang == 'fr' ? langFr.lang : langEn.lang
     },
     file() {
@@ -91,25 +104,26 @@ export default {
   },
   methods: {
     callApi: function () {
-
+      this.axiosGet()
+    },
+    axiosGet() {
       this.showLoader()
-
-      this.city = this.city.replace(/ /g,'-').toLowerCase()
-      Axios.get("https://api.openweathermap.org/data/2.5/weather?q="+this.city+"&units=metric&lang=fr&appid="+ApiKey)
+      let city = this.city.replace(/ /g,'-').toLowerCase()
+      Axios.get("https://api.openweathermap.org/data/2.5/weather?q="+city+"&units=metric&lang="+this.selectLang+"&appid="+ApiKey)
         .then((response) => {
           this.fileApi = response.data
           this.errorCity = false
-          console.log(response.status)
+          this.setItemLocalStorage('userCity', city)
           this.loader()
         })
         .catch((error) => {
-          console.log(error.response);
-          this.errorCity = true
-          this.loader()
-        })
+        console.log(error.response);
+        this.errorCity = true
+        this.loader()
+      })
     },
     cons() {
-      console.log('test')
+      console.log(this.fileApi.dt*1000-(this.fileApi.timezone*1000))
     },
     showLoader() {
       this.loaderVisible = true;
@@ -120,15 +134,18 @@ export default {
     loader() {
       window.setTimeout(this.hideLoader, 1000);
     },
-    // clearLoader() {
-
-    // }
+    setItemLocalStorage(item, value) {
+      localStorage.setItem(item, value);
+    },
+    clearAllLocalStorage() {
+      localStorage.clear();
+    }
   },
     filters: {
     toKm: function (value) {
       return value / 1000
     },
-    toDate: function (timeStamp) {
+    toDateFullfunction (timeStamp) {
       // var timeStamp = 1345902217, // le TimeStamp à convertir
       let date = new Date(timeStamp * 1000); // pour obtenir le timeStamp en millisecondes
 
@@ -138,9 +155,31 @@ export default {
       let heure = date.getHours(); // on récupère l'heure
       let min = date.getMinutes(); // on récupère les minutes
       // let sec = date.getSeconds(); // on récupère les secondes
-     
+      heure = heure.toString().length > 1 ? heure.toString() : '0' + heure
+      min = min.toString().length > 1 ? min.toString() : '0' + min
       // result = "le "+jour+"/"+mois+"/"+annee+" - "+heure+"h "+min+"min "+sec+"s"
       // console.log(result); // affichera : le 25/08/2012 - 15h 43min 37s
+      return heure + ":" + min;
+    },
+    toDateJMY(timeStamp) {
+      let date = new Date(timeStamp * 1000);
+
+      let annee = date.getFullYear();
+      let jour = date.getDate();
+      let mois = date.getMonth();
+     
+      jour = jour.toString().length > 1 ? jour.toString() : '0' + jour
+      mois = mois.toString().length > 1 ? mois.toString() : '0' + mois
+   
+      return jour + "/" + mois + "/" + annee;
+    },
+    toDateHM: function (timeStamp) {
+    
+      let date = new Date(timeStamp * 1000);
+      let heure = date.getHours();
+      let min = date.getMinutes(); 
+      heure = heure.toString().length > 1 ? heure.toString() : '0' + heure
+      min = min.toString().length > 1 ? min.toString() : '0' + min
       return heure + ":" + min;
     },
   },
