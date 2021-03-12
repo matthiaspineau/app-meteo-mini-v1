@@ -47,16 +47,6 @@
     </div>
 
     <!-- Zone debug -->
-        <!-- debug local storage -->
-       <!-- <div>
-          <div>localStorage</div>
-          <div>
-            <span>{{ userCity }}</span>
-          </div>
-          <div>
-            <button @click="clearAllLocalStorage" class="btn-grad">clear all</button><button @click="cons">console log</button>
-          </div>
-        </div> -->
 
         <!-- <div class="debug">
           {{ fileApi }}
@@ -87,7 +77,8 @@ export default {
       fileApi: null,
       errorCity: false,
       loaderVisible: false,
-      city: localStorage.getItem('userCity') ? localStorage.getItem('userCity')  : "epinay-sur-seine",
+      // city: localStorage.getItem('userCity') ? localStorage.getItem('userCity')  : "paris",
+      city:  "paris",
       selectLang: 'fr',
     };
   },
@@ -113,7 +104,7 @@ export default {
         .then((response) => {
           this.fileApi = response.data
           this.errorCity = false
-          this.setItemLocalStorage('userCity', city)
+          // this.setItemLocalStorage('userCity', city)
           this.loader()
         })
         .catch((error) => {
@@ -134,12 +125,12 @@ export default {
     loader() {
       window.setTimeout(this.hideLoader, 1000);
     },
-    setItemLocalStorage(item, value) {
-      localStorage.setItem(item, value);
-    },
-    clearAllLocalStorage() {
-      localStorage.clear();
-    }
+    // setItemLocalStorage(item, value) {
+    //   localStorage.setItem(item, value);
+    // },
+    // clearAllLocalStorage() {
+    //   localStorage.clear();
+    // }
   },
     filters: {
     toKm: function (value) {

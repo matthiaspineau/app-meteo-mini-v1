@@ -1,25 +1,23 @@
 <template>
-<div>
-    <button @click="progress">cliquer</button>
-
     <div class="wrapper__sun">
         <div class="left">
           <span>{{ (file.sys.sunrise + ( file.timezone -1000 )) | toDateHM }}</span>
           <small class="small">{{ lang.sunrise }}</small>
         </div>
+
         <div class="center">
+            <span>{{ (file.dt + ( file.timezone )) | toDateHM }}</span>
             <div class="wrapper__dessin">
                 <div class="dessin">
                     <span class="sunSpan" :class="{ jour : isJour, nuit : isNuit }" :style="{ left : positionCercle + '%' } "></span>
                 </div>
             </div>
-            <span>{{ (file.dt + ( file.timezone )) | toDateHM }}</span>
         </div>
+
         <div class="right">
           <span>{{ (file.sys.sunset + ( file.timezone  )) | toDateHM }}</span>
           <small class="small">{{ lang.sunset }}</small>
         </div>
-    </div>
     </div>
 </template>
 
@@ -27,14 +25,7 @@
 export default {
     name: 'Sun',
     props: {
-        // isNuit: {
-        //     type: Boolean,
-        //     default: false
-        // },
-        // isJour: {
-        //     type: Boolean,
-        //     default: false
-        // },
+
         file: {
             type: Object,
             default: function () {
@@ -91,22 +82,6 @@ export default {
             let heure = date.getUTCHours();
             return Math.round(heure)
         },
-        progress() {
-            // let deb = this.file.sys.sunrise
-            // let act = this.file.dt
-            // let fin = this.file.sys.sunset
-            // // console.log(deb, act, fin)
-
-            // if ( deb <= act && act <= fin) {
-            //     console.log('jour')
-            //     this.IsJour = true
-            //     this.isNuit = false
-            // } else {
-            //     console.log('nuit')
-            //     this.IsJour = false
-            //     this.isNuit = true
-            // }
-        }
     },
     filters: {
         toDateHM: function (timeStamp) {
@@ -132,10 +107,10 @@ export default {
 
     .dessin {
         position: relative;
-
+        margin-top: 5px;
         width: 100%;
         height: 1px;
-        background: #fff;
+        background: rgb(116, 116, 116);
        
    
         .sunSpan {
@@ -149,13 +124,13 @@ export default {
         }
 
         .jour {
-            background: red;
-            border: 1px solid red;
+            background: rgb(231, 111, 31);
+            border: 1px solid rgb(231, 111, 31);
         }
 
         .nuit {
-            background: blue;
-            border: 1px solid blue;
+            background: rgb(46, 46, 189);
+            border: 1px solid rgb(46, 46, 189);
         }
         
     }
@@ -182,6 +157,8 @@ export default {
     }
 
     .small {
+        margin-top: 5px;
+        display: block;
         color: rgb(116, 116, 116);
         font-size: 0.8rem;
     }
