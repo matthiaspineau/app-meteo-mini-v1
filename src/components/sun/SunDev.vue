@@ -25,7 +25,7 @@
 
 <script>
 export default {
-    name: 'Sun',
+    name: 'SunDev',
     props: {
         // isNuit: {
         //     type: Boolean,
